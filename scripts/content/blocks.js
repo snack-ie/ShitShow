@@ -1,5 +1,6 @@
 let blocks = [
-  "tdl"
+  "payload-launcher",
+  "box"
   ]
 
 for (var i = 0; i < blocks.length; i++) {
