@@ -2,9 +2,13 @@ const box = extendContent(PayloadAcceptor, "box", {
   icons() {
     return [Core.atlas.find(this.modName + this.name)];
   },
+  acceptPayload() {
+   return true;
+  },
   
   /* json shit */
   
+  configurable: true,
   outputsPayload: true,
   rotate: true,
   size: 1,
@@ -16,13 +20,37 @@ const box = extendContent(PayloadAcceptor, "box", {
   buildCostMultiplier: 12
 });
 
-box.buildType  = () => 
+box.buildType = () => 
   extendContent(PayloadAcceptor.PayloadAcceptorBuild, box, {
+    buildConfiguration(table) {
+        table.button(Icon.up, Styles.clearTransi, () => {
+            this.shouldOutput = true;
+        }).size(45);
+    },
+    updateTile() {
+        this.super$updateTile();
+        if (this.shouldOutput) {
+            this.moveOutPayload();
+        }
+    },
+    update() {
+        this.super$update();
+        if (!this.payload) {
+            this.shouldOutput = false;
+        }
+    },
     placed() {
       this.payload = new UnitPayload(UnitTypes.dagger.create(this.team));
     },
-    updateTile() {
-      this.super$updateTile();
-      this.moveOutPayload();
-    }
+    display(table) {
+        this.super$display(table);
+        if (this.payload) {
+            table.row();
+            table.table(null, t => {
+                t.left();
+                t.add(new Image(this.payload.unit.type.icon(Cicon.full))).left();
+                t.add(new Label(this.payload.unit.type.localizedName)).left();
+        }).left();
+        }
+    },
 });
