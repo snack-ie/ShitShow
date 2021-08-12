@@ -1,3 +1,4 @@
+const sk = require("content/units/sk")
 const box = extendContent(PayloadAcceptor, "box", {
   icons() {
     return [Core.atlas.find(this.modName + this.name)];
@@ -40,7 +41,12 @@ box.buildType = () =>
         }
     },
     placed() {
-      this.payload = new UnitPayload(UnitTypes.dagger.create(this.team));
+      let type = UnitTypes.dagger
+      // should easter egg
+      // if (true) {
+          type = sk
+      // }
+      this.payload = new UnitPayload(type.create(this.team));
     },
     display(table) {
         this.super$display(table);
@@ -48,7 +54,7 @@ box.buildType = () =>
             table.row();
             table.table(null, t => {
                 t.left();
-                t.add(new Image(this.payload.unit.type.icon(Cicon.full))).left();
+                t.add(new Image(this.payload.unit.type.icon(Cicon.full))).left().size(8 * 4).pad(5.0);
                 t.add(new Label(this.payload.unit.type.localizedName)).left();
         }).left();
         }

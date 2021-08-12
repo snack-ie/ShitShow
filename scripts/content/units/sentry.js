@@ -11,7 +11,7 @@ name: gemei-cannon
     shootY: 19
     recoil: 16
     shadow: 50
-    bullet: 
+    bullet:
         {
         type: ShrapnelBulletType
         length: 700
@@ -31,13 +31,11 @@ name: gemei-cannon
         }
     }
 */
-const sentrygun = extend(Weapon, "gun", {
-    name: "shitshow-gun",
+const sentrygun = extend(Weapon, "sentry-gun", {
+    name: "shitshow-sentry-gun",
     x: 0,
-    y: 0,
+    y: 5,
     mirror: false,
-    rotateSpeed: 1,
-    rotate: true,
     reload: 10,
     bullet: Bullets.standardCopper
 });
@@ -50,14 +48,33 @@ const sentrygun = extend(Weapon, "gun", {
     "engineSize"    : 0,
 */
 const sentry = extend(UnitType, "sentry", {
-    type: "Ground",
+    type: "legs",
     name: "shitshow-sentry",
     speed: 0,
-    rotateSpeed: 0,
+    rotateSpeed: 5,
     rotateShooting: true,
-    engineSize: 0
+    engineSize: 0,
+    allowLegStep: true,
+    legCount: 4,
+    legLenth: 9.0,
+    legTrns: 0.6,
+    legMoveSpace: 1.4
 });
 
 sentry.weapons.add(sentrygun)
 
-sentry.constructor = () => extend(UnitEntity, {});
+sentry.constructor = () => extend(LegsUnit, {});
+
+const SentryFac = extend(UnitFactory, "sentry-fac", {
+    name: "shitshow-sentry-fac",
+    size: 3,
+    buildVisibility: BuildVisibility.shown,
+    category: Category.units
+});
+
+SentryFac.plans.add(
+    new UnitFactory.UnitPlan(
+        sentry, 500, ItemStack.with(Items.silicon, 70, Items.metaglass, 75)
+    )
+)
+SentryFac.consumes.power(1.2)
