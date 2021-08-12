@@ -1,28 +1,27 @@
-const sk = require("content/units/sk")
+if (Core.settings.get("cheatCode", "") == "skinabox") {
+    const sk = require("content/units/sk")
+}
 const box = extendContent(PayloadAcceptor, "box", {
-  icons() {
-    return [Core.atlas.find(this.modName + this.name)];
-  },
-  acceptPayload() {
-   return true;
-  },
-  
-  /* json shit */
-  
-  configurable: true,
-  outputsPayload: true,
-  rotate: true,
-  size: 1,
-  buildVisibility: BuildVisibility.shown,
-  requirements: ItemStack.with(
-      Items.silicon, 10,
-      Items.lead, 10
-  ),
-  buildCostMultiplier: 12
+    icons() {
+        return [Core.atlas.find(this.modName + this.name)];
+    },
+
+    /* json shit */
+
+    configurable: true,
+    outputsPayload: true,
+    rotate: true,
+    size: 1,
+    buildVisibility: BuildVisibility.shown,
+    requirements: ItemStack.with(
+        Items.silicon, 10,
+        Items.lead, 10
+    ),
+    buildCostMultiplier: 12
 });
 
-box.buildType = () => 
-  extendContent(PayloadAcceptor.PayloadAcceptorBuild, box, {
+box.buildType = () =>
+extendContent(PayloadAcceptor.PayloadAcceptorBuild, box, {
     buildConfiguration(table) {
         table.button(Icon.up, Styles.clearTransi, () => {
             this.shouldOutput = true;
@@ -41,12 +40,11 @@ box.buildType = () =>
         }
     },
     placed() {
-      let type = UnitTypes.dagger
-      // should easter egg
-      // if (true) {
-          type = sk
-      // }
-      this.payload = new UnitPayload(type.create(this.team));
+        let type = UnitTypes.dagger
+        if (Core.settings.get("cheatCode", "") == "skinabox") {
+        type = sk
+        }
+        this.payload = new UnitPayload(type.create(this.team));
     },
     display(table) {
         this.super$display(table);
@@ -56,7 +54,10 @@ box.buildType = () =>
                 t.left();
                 t.add(new Image(this.payload.unit.type.icon(Cicon.full))).left().size(8 * 4).pad(5.0);
                 t.add(new Label(this.payload.unit.type.localizedName)).left();
-        }).left();
+            }).left();
         }
     },
+    acceptPayload() {
+        return this.payload == null
+    }
 });

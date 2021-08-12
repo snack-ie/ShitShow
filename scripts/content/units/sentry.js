@@ -1,56 +1,33 @@
-/*
-name: gemei-cannon
-    reload: 350
-    x: 0
-    y: 0
-    mirror: false
-    rotate: true
-    shots: 1
-    rotateSpeed: 1.4
-    alternate: false
-    shootY: 19
-    recoil: 16
-    shadow: 50
-    bullet:
-        {
-        type: ShrapnelBulletType
-        length: 700
-        damage: 2350
-        witdh: 65
-        lifetime: 100
-        serrationLenScl: 100
-        serrationSpaceOffset: 500
-        serrations: 3
-        serrationWidth: 10
-        largeHit: true
-        fromColor: 84f491
-        toColor: 84f491
-        healPercent: 25
-        collidesTeam: true
-        sideAngle: 10
-        }
-    }
-*/
+let pee;
+let peeshower;
+
+if (Core.settings.get("cheatCode", "") == "dpg") {
+
+    pee = extend(Liquid, "pee", {
+        color: new Color(0.831372549, 0.7529411765, 0.3137254902)
+    });
+
+    peeshower = extend(LiquidBulletType, {
+        liquid: pee
+    });
+
+}
+
 const sentrygun = extend(Weapon, "sentry-gun", {
     name: "shitshow-sentry-gun",
     x: 0,
     y: 5,
     mirror: false,
     reload: 10,
+    rotateSpeed: 5,
     bullet: Bullets.standardCopper
 });
-/*
- "type"          : "Ground",
-    "name"          : "sentry"
-    "speed"         : 0,
-    "rotateSpeed"   : 0,
-    "rotateShooting": true,
-    "engineSize"    : 0,
-*/
+
 const sentry = extend(UnitType, "sentry", {
     type: "legs",
     name: "shitshow-sentry",
     speed: 0,
+    range: 27,
     rotateSpeed: 5,
     rotateShooting: true,
     engineSize: 0,
@@ -61,9 +38,16 @@ const sentry = extend(UnitType, "sentry", {
     legMoveSpace: 1.4
 });
 
+if (Core.settings.get("cheatCode", "") == "dpg") {
+    sentrygun.bullet = peeshower
+    sentrygun.reload = 0.01
+}
+
 sentry.weapons.add(sentrygun)
 
-sentry.constructor = () => extend(LegsUnit, {});
+sentry.constructor = () => extend(LegsUnit, {
+    
+});
 
 const SentryFac = extend(UnitFactory, "sentry-fac", {
     name: "shitshow-sentry-fac",
