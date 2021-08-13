@@ -1,7 +1,9 @@
 let pee;
 let peeshower;
 
-if (Core.settings.get("cheatCode", "") == "dpg") {
+let getCode = require("utils/getCode").func
+
+if (getCode("dpg")) {
 
     pee = extend(Liquid, "pee", {
         color: new Color(0.831372549, 0.7529411765, 0.3137254902)
@@ -38,16 +40,24 @@ const sentry = extend(UnitType, "sentry", {
     legMoveSpace: 1.4
 });
 
-if (Core.settings.get("cheatCode", "") == "dpg") {
+if (getCode("dpg")) {
     sentrygun.bullet = peeshower
     sentrygun.reload = 0.01
+} else {
+    /*
+    @Pietro303HD/ShitShow here are my balancing stuff for the sentry
+
+bullet lifetime: 1.75 seconds
+damage: 10-14
+rotate speed: 500
+*/
+    sentrygun.bullet.damage = 12
+    sentrygun.bullet.lifetime = 105
 }
 
 sentry.weapons.add(sentrygun)
 
-sentry.constructor = () => extend(LegsUnit, {
-    
-});
+sentry.constructor = () => extend(LegsUnit, {});
 
 const SentryFac = extend(UnitFactory, "sentry-fac", {
     name: "shitshow-sentry-fac",
