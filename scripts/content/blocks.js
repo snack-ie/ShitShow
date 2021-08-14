@@ -1,6 +1,8 @@
 let blocks = [
   "payload-launcher",
-  "box"
+  "box",
+  "unit-reciever",
+  "unit-caller"
   ]
 
 for (var i = 0; i < blocks.length; i++) {

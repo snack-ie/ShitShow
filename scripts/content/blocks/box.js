@@ -31,6 +31,9 @@ extendContent(PayloadAcceptor.PayloadAcceptorBuild, box, {
         this.super$updateTile();
         if (this.shouldOutput) {
             this.moveOutPayload();
+            if (!this.payload) {
+                this.kill()
+            }
         }
     },
     update() {

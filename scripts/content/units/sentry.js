@@ -15,6 +15,11 @@ if (getCode("dpg")) {
 
 }
 
+const sentryBulletType = extend(BasicBulletType, {
+    damage: 12 /* i rember */,
+    lifetime: 105
+})
+
 const sentrygun = extend(Weapon, "sentry-gun", {
     name: "shitshow-sentry-gun",
     x: 0,
@@ -22,7 +27,7 @@ const sentrygun = extend(Weapon, "sentry-gun", {
     mirror: false,
     reload: 10,
     rotateSpeed: 5,
-    bullet: Bullets.standardCopper
+    bullet: sentryBulletType
 });
 
 const sentry = extend(UnitType, "sentry", {
@@ -43,17 +48,7 @@ const sentry = extend(UnitType, "sentry", {
 if (getCode("dpg")) {
     sentrygun.bullet = peeshower
     sentrygun.reload = 0.01
-} else {
-    /*
-    @Pietro303HD/ShitShow here are my balancing stuff for the sentry
-
-bullet lifetime: 1.75 seconds
-damage: 10-14
-rotate speed: 500
-*/
-    sentrygun.bullet.damage = 12
-    sentrygun.bullet.lifetime = 105
-}
+} 
 
 sentry.weapons.add(sentrygun)
 
